@@ -36,41 +36,48 @@
     </nav>
 
     <div class="background-white" id="background-white">
-        <!-- <div class="html-quiz-main-div">
+        <div class="html-quiz-main-div">
             <div class="question-body">
                 <div class="question-div">
-                    <span>Q. What is your name?</span>
+                    <span id="question" class="option-txt"></span>
                     <button type="button" class="btn-close" onclick="closeDiv()"></button>
                 </div>
                 <div class="options-div">
                     <div>
-                        <input type="radio" name="name" id="" value="q1">
-                        <span>Sualeh</span>
+                        <label id="option1" class="option" onclick="enabledNextBtn()">
+                            <input type="radio" name="answer" value="1">
+                            <span id="option1Text" class="option-txt"></span>
+                        </label>
                     </div>
                     <div>
-                        <input type="radio" name="name" id="" value="q1">
-                        <span>Rayyan</span>
+                        <label id="option2" class="option" onclick="enabledNextBtn()">
+                            <input type="radio" name="answer" value="2">
+                            <span id="option2Text" class="option-txt"></span>
+                        </label>
                     </div>
                     <div>
-                        <input type="radio" name="name" id="" value="q1">
-                        <span>Mohib</span>
+                        <label id="option3" class="option" onclick="enabledNextBtn()">
+                            <input type="radio" name="answer" value="3">
+                            <span id="option3Text" class="option-txt"></span>
+                        </label>
                     </div>
                     <div>
-                        <input type="radio" name="name" id="" value="q1">
-                        <span>Ahmed</span>
+                        <label id="option4" class="option" onclick="enabledNextBtn()">
+                            <input type="radio" name="answer" value="4">
+                            <span id="option4Text" class="option-txt"></span>
+                        </label>
                     </div>
                 </div>
             </div>
             <div class="next-question">
-                <button class="button type1">
+                <button class="button type1" onclick="NextQues()" disabled id="next-button">
                     <span class="btn-txt">Next</span>
                 </button>
 
             </div>
-        </div> -->
+        </div>
     </div>
 
-    <!-- data-bs-target="#exampleModal" data-bs-toggle="modal"-->
     <div class="container">
         <div class="home-page-div">
             <div class="html-div">
@@ -81,8 +88,7 @@
                     to make your HTML beautiful and add interactivity, respectively.
                 </p>
                 <div class="btn-div">
-                    <button class="start-btn" onclick="showDiv('html')">Start
-                        Quiz</button>
+                    <button class="start-btn" onclick="showDiv('html')" id="btn-sualeh">Start Quiz</button>
                 </div>
             </div>
             <div class="css-div">
@@ -110,33 +116,7 @@
         </div>
     </div>
 
-    <!-- <div class="html-quiz-main-div">
-        <div class="question-body">
-            <div class="question-div">
-                Q. What is your name?
-            </div>
-            <div class="options-div">
-                <div>
-                    <input type="radio" name="name" id="" value="q1">
-                    <span>Sualeh</span>
-                </div>
-                <div>
-                    <input type="radio" name="name" id="" value="q1">
-                    <span>Rayyan</span>
-                </div>
-                <div>
-                    <input type="radio" name="name" id="" value="q1">
-                    <span>Mohib</span>
-                </div>
-                <div>
-                    <input type="radio" name="name" id="" value="q1">
-                    <span>Ahmed</span>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
