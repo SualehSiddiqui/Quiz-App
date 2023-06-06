@@ -28,7 +28,7 @@
                         <a class="nav-link active" aria-current="page" href="#">Quizzes</a>
                     </li>
                 </ul>
-                <button class="btn log-out-btn" type="submit">
+                <button class="btn log-out-btn" type="submit" onclick="logout()">
                     <span>Logout</span>
                 </button>
             </div>
@@ -40,37 +40,37 @@
             <div class="question-body">
                 <div class="question-div">
                     <span id="question" class="option-txt"></span>
-                    <button type="button" class="btn-close" onclick="closeDiv()"></button>
                 </div>
                 <div class="options-div">
                     <div>
-                        <label id="option1" class="option" onclick="enabledNextBtn()">
-                            <input type="radio" name="answer" value="1">
+                        <label id="option1" class="option">
+                            <input type="radio" name="answer" value="1" onclick="enabledNextBtn()">
                             <span id="option1Text" class="option-txt"></span>
                         </label>
                     </div>
                     <div>
-                        <label id="option2" class="option" onclick="enabledNextBtn()">
-                            <input type="radio" name="answer" value="2">
+                        <label id="option2" class="option">
+                            <input type="radio" name="answer" value="2" onclick="enabledNextBtn()">
                             <span id="option2Text" class="option-txt"></span>
                         </label>
                     </div>
                     <div>
-                        <label id="option3" class="option" onclick="enabledNextBtn()">
-                            <input type="radio" name="answer" value="3">
+                        <label id="option3" class="option">
+                            <input type="radio" name="answer" value="3" onclick="enabledNextBtn()">
                             <span id="option3Text" class="option-txt"></span>
                         </label>
                     </div>
                     <div>
-                        <label id="option4" class="option" onclick="enabledNextBtn()">
-                            <input type="radio" name="answer" value="4">
+                        <label id="option4" class="option">
+                            <input type="radio" name="answer" value="4" onclick="enabledNextBtn()">
                             <span id="option4Text" class="option-txt"></span>
                         </label>
                     </div>
                 </div>
             </div>
             <div class="next-question">
-                <button class="button type1" onclick="NextQues()" disabled id="next-button">
+                <div class="time-div" id="time-div"></div>
+                <button class="button type1" onclick="nextQues()" disabled id="next-button">
                     <span class="btn-txt">Next</span>
                 </button>
 

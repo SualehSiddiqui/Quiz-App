@@ -382,10 +382,10 @@ var js = [
     },
     {
         question: 'Where is the correct place to insert a JavaScript?',
-        option1: 'The "head" section',
-        option2: 'The "body" section',
-        option3: 'Both the "head" and "body" section are correct',
-        correctOption: 'The "body" section'
+        option1: 'The <head> section',
+        option2: 'The <body> section',
+        option3: 'Both the <head> and "body" section are correct',
+        correctOption: 'The <body> section'
     },
     {
         question: 'What is the correct syntax for referring to an external script called "xxx.js"?',
@@ -536,17 +536,18 @@ function closeDiv() {
 
 var myDocument = document.documentElement;
 var index;
+var whichLanguage = "";
 var questionabc = document.getElementById("question");
 var questionOption1 = document.getElementById("option1");
 var questionOption2 = document.getElementById("option2");
 var questionOption3 = document.getElementById("option3");
 var questionOption4 = document.getElementById("option4");
-var whichLanguage = "";
 var option1Text = document.getElementById("option1Text")
 var option2Text = document.getElementById("option2Text")
 var option3Text = document.getElementById("option3Text")
 var option4Text = document.getElementById("option4Text")
 
+var quizStart;
 
 function showDiv(language) {
     quizDiv.style.display = "flex"
@@ -623,6 +624,8 @@ function showDiv(language) {
         }
         whichLanguage = "JS";
     }
+
+    quizStart = "hn";
 }
 
 var nextButton = document.getElementById("next-button");
@@ -632,10 +635,13 @@ function enabledNextBtn() {
 }
 
 var marks = 0;
+var sec = 60;
+var min = 01;
 
-function NextQues() { 
+function nextQues() {
 
-
+    sec = 60;
+    min = 01;
     index++
     nextButton.disabled = true
     if (whichLanguage == "HTML") {
@@ -646,25 +652,25 @@ function NextQues() {
             if (html[index].option1) {
                 questionOption1.style.display = "flex";
                 option1Text.innerText = `${html[index].option1}`
-            } else{
+            } else {
                 questionOption1.style.display = "none";
             }
             if (html[index].option2) {
                 questionOption2.style.display = "flex";
                 option2Text.innerText = `${html[index].option2}`
-            } else{
+            } else {
                 questionOption2.style.display = "none";
             }
             if (html[index].option3) {
                 questionOption3.style.display = "flex";
                 option3Text.innerText = `${html[index].option3}`
-            } else{
+            } else {
                 questionOption3.style.display = "none";
             }
             if (html[index].option4) {
                 questionOption4.style.display = "flex";
                 option4Text.innerText = `${html[index].option4}`
-            } else{
+            } else {
                 questionOption4.style.display = "none";
             }
         }
@@ -676,25 +682,25 @@ function NextQues() {
             if (css[index].option1) {
                 questionOption1.style.display = "flex";
                 option1Text.innerText = `${css[index].option1}`
-            } else{
+            } else {
                 questionOption1.style.display = "none";
             }
             if (css[index].option2) {
                 questionOption2.style.display = "flex";
                 option2Text.innerText = `${css[index].option2}`
-            } else{
+            } else {
                 questionOption2.style.display = "none";
             }
             if (css[index].option3) {
                 questionOption3.style.display = "flex";
                 option3Text.innerText = `${css[index].option3}`
-            } else{
+            } else {
                 questionOption3.style.display = "none";
             }
             if (css[index].option4) {
                 questionOption4.style.display = "flex";
                 option4Text.innerText = `${css[index].option4}`
-            } else{
+            } else {
                 questionOption4.style.display = "none";
             }
         }
@@ -706,25 +712,25 @@ function NextQues() {
             if (js[index].option1) {
                 questionOption1.style.display = "flex";
                 option1Text.innerText = `${js[index].option1}`
-            } else{
+            } else {
                 questionOption1.style.display = "none";
             }
             if (js[index].option2) {
                 questionOption2.style.display = "flex";
                 option2Text.innerText = `${js[index].option2}`
-            } else{
+            } else {
                 questionOption2.style.display = "none";
             }
             if (js[index].option3) {
                 questionOption3.style.display = "flex";
                 option3Text.innerText = `${js[index].option3}`
-            } else{
+            } else {
                 questionOption3.style.display = "none";
             }
             if (js[index].option4) {
                 questionOption4.style.display = "flex";
                 option4Text.innerText = `${js[index].option4}`
-            } else{
+            } else {
                 questionOption4.style.display = "none";
             }
         }
@@ -777,32 +783,55 @@ function NextQues() {
         }
     }
 
+    
 }
 
 function Result() {
-    var finalResult = (marks / html.length) * 100;
-    Swal.fire({
-        title: `Results :${finalResult}%`,
-        showClass: {
-            popup: 'animate__animated animate__fadeInDown'
-        },
-        hideClass: {
-            popup: 'animate__animated animate__fadeOutUp'
-        }
-    })
-
+    if (quizStart == "hn") {
+        var finalResult = (marks / html.length) * 100;
+        Swal.fire({
+            title: `Results :${finalResult}%`,
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            }
+        })
+        quizDiv.style.display = "none";
+        marks = 0;
+        index = 0;
+    }
 }
 
-myDocument.addEventListener("blur", function(){
+window.addEventListener("blur", function () {
     Result()
-    closeDiv()
 })
 
-myDocument.addEventListener("keyDown", function(){
-    Result();
-    closeDiv();
-})
+function logout() {
+    location.replace("login.html")
+}
 
 
+var time = document.getElementById("time-div");
 
+setInterval(function () {
+    if (sec == 0) {
+
+        if (min == 0) {
+            nextQues()
+            sec = 15;
+            min = 01;
+        } else {
+            --min
+            sec = 15;
+        }
+    }
+    var s = sec < 10 ? "0" + sec : sec;
+    var m = min < 10 ? "0" + min : min;
+
+    time.innerHTML = `${m} : ${s}`
+
+    --sec
+}, 400)
 
