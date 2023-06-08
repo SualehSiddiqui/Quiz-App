@@ -34,30 +34,21 @@ function check() {
             var capital = firstLetter.toUpperCase();
             var newName = capital + checkName.slice(1);
             checkName = newName;
-
+            var idExist = false;
             if (checkPassword == pass.value && checkEmail == email.value) {
-                // Swal.fire({
-                //     title: `Welcome ${checkName}`,
-                //     showClass: {
-                //         popup: 'animate__animated animate__fadeInDown'
-                //     },
-                //     hideClass: {
-                //         popup: 'animate__animated animate__fadeOutUp'
-                //     }
-                // })
-
-                window.location.replace("home.html")
+                idExist = true;
                 break
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Sorry...',
-                    text: 'We cannot find your account',
-                    footer: "<a href='index.html'>Don't have an account?</a>"
-                })
-
-
             }
+        }
+        if (idExist) {
+            window.location.replace("home.html")
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Sorry...',
+                text: 'We cannot find your account',
+                footer: "<a href='index.html'>Don't have an account?</a>"
+            })
         }
     } else {
         Swal.fire({
@@ -626,6 +617,28 @@ function showDiv(language) {
     }
 
     quizStart = "hn";
+
+    var time = document.getElementById("time-div");
+
+    setInterval(function () {
+        if (sec == 0) {
+
+            if (min == 0) {
+                nextQues()
+                sec = 15;
+                min = 01;
+            } else {
+                --min
+                sec = 15;
+            }
+        }
+        var s = sec < 10 ? "0" + sec : sec;
+        var m = min < 10 ? "0" + min : min;
+
+        time.innerHTML = `${m} : ${s}`
+
+        --sec
+    }, 500)
 }
 
 var nextButton = document.getElementById("next-button");
@@ -782,8 +795,6 @@ function nextQues() {
             options[i].checked = false
         }
     }
-
-    
 }
 
 function Result() {
@@ -812,26 +823,4 @@ function logout() {
     location.replace("login.html")
 }
 
-
-var time = document.getElementById("time-div");
-
-setInterval(function () {
-    if (sec == 0) {
-
-        if (min == 0) {
-            nextQues()
-            sec = 15;
-            min = 01;
-        } else {
-            --min
-            sec = 15;
-        }
-    }
-    var s = sec < 10 ? "0" + sec : sec;
-    var m = min < 10 ? "0" + min : min;
-
-    time.innerHTML = `${m} : ${s}`
-
-    --sec
-}, 400)
 
