@@ -1,69 +1,86 @@
-num = 0;
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-analytics.js";
 
-function store() {
-    ++num
-    var pass = document.getElementById("sign-password");
-    var email = document.getElementById("sign-email");
-    var userName = document.getElementById("sign-name");
-    if (/^[\w\-\.\+]+\@[a-zA-Z0-9\. \-]+\.[a-zA-z0-9]{2,4}$/.test(email.value) && pass.value.trim() != "") {
-        localStorage.setItem(`login${num}`, JSON.stringify({ password: pass.value, mail: email.value, name: userName.value }))
-        pass.value = "";
-        email.value = "";
-        userName.value = "";
-    } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Invalid Email or Password',
-            text: 'Please enter valid email address or password',
+const firebaseConfig = {
+    apiKey: "AIzaSyAl06WYI2x9TeZ8XihlULIOzbUAQGYWQyo",
+    authDomain: "quiz-app-77082.firebaseapp.com",
+    projectId: "quiz-app-77082",
+    storageBucket: "quiz-app-77082.appspot.com",
+    messagingSenderId: "411700922840",
+    appId: "1:411700922840:web:167fce80bd519c03f0caad",
+    measurementId: "G-TBC0BCRF1F"
+};
+
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+const auth = getAuth();
+
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
+const db = getFirestore(app);
+
+let storeId = async () => {
+    const password = document.getElementById("sign-password");
+    const email = document.getElementById("sign-email");
+    const userName = document.getElementById("sign-name");
+    createUserWithEmailAndPassword(auth, email.value, password.value)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            console.log(user)
+            password.value = "";
+            email.value = "";
+            userName.value = "";
+            // location.replace("home.html")
         })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log("errorMessage", errorMessage)
+            Swal.fire({
+                icon: 'error',
+                // title: 'Invalid Email or Password',
+                text:  errorMessage,
+            })
+        });
+
+    try {
+        const docRef = await addDoc(collection(db, "users"), {
+            name: userName.value,
+            email: email.value,
+        });
+        console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+        console.error("Error adding document: ", e);
     }
 
 }
 
-function check() {
-    var pass = document.getElementById("login-password");
-    var email = document.getElementById("login-email");
 
-    if (/^[\w\-\.\+]+\@[a-zA-Z0-9\. \-]+\.[a-zA-z0-9]{2,4}$/.test(email.value) && pass.value.trim() != "") {
-        for (var i = 1; i < localStorage.length + 1; i++) {
-            var checking = JSON.parse(localStorage.getItem(`login${i}`))
-            var checkPassword = checking.password;
-            var checkEmail = checking.mail;
-            var checkName = checking.name;
-            var firstLetter = checkName.slice(0, 1);
-            var capital = firstLetter.toUpperCase();
-            var newName = capital + checkName.slice(1);
-            checkName = newName;
-            var idExist = false;
-            if (checkPassword == pass.value && checkEmail == email.value) {
-                idExist = true;
-                break
-            }
-        }
-        if (idExist) {
-            window.location.replace("home.html")
-        } else {
+let checkId = () => {
+    let password = document.getElementById("login-password");
+    let email = document.getElementById("login-email");
+    signInWithEmailAndPassword(auth, email.value, password.value)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            location.replace("home.html")
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log("errorMessage", errorMessage)
             Swal.fire({
                 icon: 'error',
-                title: 'Sorry...',
-                text: 'We cannot find your account',
-                footer: "<a href='index.html'>Don't have an account?</a>"
+                title: 'Invalid Email or Password',
+                text: 'Please enter valid email address or password',
             })
-        }
-    } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Invalid Email or Password',
-            text: 'Please enter valid email address or password',
-
-        })
-    }
-    pass.value = "";
+        });
+    password.value = "";
     email.value = "";
 
 }
 
-var html = [
+let html = [
     {
         question: 'What does HTML stand for?',
         option1: 'Hyperlinks and Text Markup Language',
@@ -211,7 +228,7 @@ var html = [
     }
 ]
 
-var css = [
+let css = [
     {
         question: 'What does CSS stand for?',
         option1: 'Colorful Style Sheet',
@@ -362,7 +379,7 @@ var css = [
     }
 ]
 
-var js = [
+let js = [
     {
         question: 'Inside which HTML element do we put the JavaScript?',
         option1: '<scprit>',
@@ -453,11 +470,11 @@ var js = [
     },
     {
         question: 'What is the correct way to write a JavaScript array?',
-        option1: 'var colors = "red", "green", "blue"',
-        option2: 'var colors = (1:"red", 2:"green", 3:"blue")',
-        option3: 'var colors = 1 = ("red"), 2 = ("green"), 3 = ("blue")',
-        option4: 'var colors = ["red", "green", "blue"]',
-        correctOption: 'var colors = ["red", "green", "blue"]'
+        option1: 'let colors = "red", "green", "blue"',
+        option2: 'let colors = (1:"red", 2:"green", 3:"blue")',
+        option3: 'let colors = 1 = ("red"), 2 = ("green"), 3 = ("blue")',
+        option4: 'let colors = ["red", "green", "blue"]',
+        correctOption: 'let colors = ["red", "green", "blue"]'
     },
     {
         question: 'How do you round the number 7.25, to the nearest integer?',
@@ -503,16 +520,16 @@ var js = [
         correctOption: 'onclick'
     },
     {
-        question: 'How do you declare a JavaScript variable?',
+        question: 'How do you declare a JavaScript letiable?',
         option1: 'v carName;',
-        option2: 'variable carName;',
-        option3: 'var carName;',
-        correctOption: 'var carName;'
+        option2: 'letiable carName;',
+        option3: 'let carName;',
+        correctOption: 'let carName;'
     }
 ]
 
-var quizDiv = document.getElementById("background-white")
-function closeDiv() {
+let quizDiv = document.getElementById("background-white")
+let closeDiv = () => {
     quizDiv.style.display = "none";
     if (document.exitFullscreen) {
         document.exitFullscreen()
@@ -525,28 +542,28 @@ function closeDiv() {
     }
 }
 
-var myDocument = document.documentElement;
-var index;
-var whichLanguage = "";
-var questionabc = document.getElementById("question");
-var questionOption1 = document.getElementById("option1");
-var questionOption2 = document.getElementById("option2");
-var questionOption3 = document.getElementById("option3");
-var questionOption4 = document.getElementById("option4");
-var option1Text = document.getElementById("option1Text")
-var option2Text = document.getElementById("option2Text")
-var option3Text = document.getElementById("option3Text")
-var option4Text = document.getElementById("option4Text")
+const myDocument = document.documentElement;
+let index;
+let whichLanguage = "";
+const questionabc = document.getElementById("question");
+const questionOption1 = document.getElementById("option1");
+const questionOption2 = document.getElementById("option2");
+const questionOption3 = document.getElementById("option3");
+const questionOption4 = document.getElementById("option4");
+const option1Text = document.getElementById("option1Text")
+const option2Text = document.getElementById("option2Text")
+const option3Text = document.getElementById("option3Text")
+const option4Text = document.getElementById("option4Text")
 
-var quizStart;
+let quizStart;
 
-function showDiv(language) {
+let showDiv = language => {
     quizDiv.style.display = "flex"
     index = 0;
-    var option1Text = document.getElementById("option1Text")
-    var option2Text = document.getElementById("option2Text")
-    var option3Text = document.getElementById("option3Text")
-    var option4Text = document.getElementById("option4Text")
+    // let option1Text = document.getElementById("option1Text")
+    // let option2Text = document.getElementById("option2Text")
+    // let option3Text = document.getElementById("option3Text")
+    // let option4Text = document.getElementById("option4Text")
     if (myDocument.requestFullscreen) {
         myDocument.requestFullscreen()
     } else if (myDocument.msRequestFullscreen) {
@@ -618,22 +635,22 @@ function showDiv(language) {
 
     quizStart = "hn";
 
-    var time = document.getElementById("time-div");
+    let time = document.getElementById("time-div");
 
-    setInterval(function () {
+    setInterval(() => {
         if (sec == 0) {
 
             if (min == 0) {
                 nextQues()
                 sec = 15;
-                min = 01;
+                min = 1;
             } else {
                 --min
                 sec = 15;
             }
         }
-        var s = sec < 10 ? "0" + sec : sec;
-        var m = min < 10 ? "0" + min : min;
+        let s = sec < 10 ? "0" + sec : sec;
+        let m = min < 10 ? "0" + min : min;
 
         time.innerHTML = `${m} : ${s}`
 
@@ -641,20 +658,20 @@ function showDiv(language) {
     }, 500)
 }
 
-var nextButton = document.getElementById("next-button");
+let nextButton = document.getElementById("next-button");
 
-function enabledNextBtn() {
+let enabledNextBtn = () => {
     nextButton.disabled = false
 }
 
-var marks = 0;
-var sec = 60;
-var min = 01;
+let marks = 0;
+let sec = 60;
+let min = 1;
 
-function nextQues() {
+let nextQues = () => {
 
     sec = 60;
-    min = 01;
+    min = 1;
     index++
     nextButton.disabled = true
     if (whichLanguage == "HTML") {
@@ -750,10 +767,10 @@ function nextQues() {
     }
 
     if (whichLanguage == "HTML") {
-        var options = document.getElementsByName("answer")
+        let options = document.getElementsByName("answer")
         console.log(options)
 
-        for (var i = 0; i < options.length; i++) {
+        for (let i = 0; i < options.length; i++) {
             console.log(options[i].checked)
             if (options[i].checked) {
                 if (html[index - 1][`option${options[i].value}`] == html[index - 1].correctOption) {
@@ -767,10 +784,10 @@ function nextQues() {
             options[i].checked = false
         }
     } else if (whichLanguage == "CSS") {
-        var options = document.getElementsByName("answer")
+        let options = document.getElementsByName("answer")
         console.log(options)
 
-        for (var i = 0; i < options.length; i++) {
+        for (let i = 0; i < options.length; i++) {
             console.log(options[i].checked)
             if (options[i].checked) {
                 if (css[index - 1][`option${options[i].value}`] == css[index - 1].correctOption) {
@@ -781,10 +798,10 @@ function nextQues() {
             options[i].checked = false
         }
     } else if (whichLanguage == "JS") {
-        var options = document.getElementsByName("answer")
+        let options = document.getElementsByName("answer")
         console.log(options)
 
-        for (var i = 0; i < options.length; i++) {
+        for (let i = 0; i < options.length; i++) {
             console.log(options[i].checked)
             if (options[i].checked) {
                 if (js[index - 1][`option${options[i].value}`] == js[index - 1].correctOption) {
@@ -797,9 +814,9 @@ function nextQues() {
     }
 }
 
-function Result() {
+let Result = () => {
     if (quizStart == "hn") {
-        var finalResult = (marks / html.length) * 100;
+        let finalResult = (marks / html.length) * 100;
         Swal.fire({
             title: `Results :${finalResult}%`,
             showClass: {
@@ -819,8 +836,15 @@ window.addEventListener("blur", function () {
     Result()
 })
 
-function logout() {
+let logout = () => {
     location.replace("login.html")
 }
 
-
+window.storeId = storeId;
+window.checkId = checkId;
+window.closeDiv = closeDiv;
+window.showDiv = showDiv;
+window.enabledNextBtn = enabledNextBtn;
+window.nextQues = nextQues;
+window.Result = Result;
+window.logout = logout;
